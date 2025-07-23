@@ -209,19 +209,15 @@ impl Mapper {
         cmp_hat!(DOWN, controller::DPad::Down);
         // Axes – only emit if changed by ≥ 32 to avoid spam
         if (new.lx - self.prev.lx).abs() > 32 {
-            println!("New LX: {:?}", new.lx);
             self.dev.send(Position::X, new.lx as i32)?;
         }
         if (new.ly - self.prev.ly).abs() > 32 {
-            println!("New LY: {:?}", new.ly);
             self.dev.send(Position::Y, new.ly as i32)?;
         }
         if (new.rx - self.prev.rx).abs() > 32 {
-            println!("New RX: {:?}", new.rx);
             self.dev.send(Position::RX, new.rx as i32)?;
         }
         if (new.ry - self.prev.ry).abs() > 32 {
-            println!("New RY: {:?}", new.ry);
             self.dev.send(Position::RY, new.ry as i32)?;
         }
         self.dev.synchronize()?;
@@ -347,9 +343,9 @@ fn decode_sticks(src: &[u8], st: &mut State) {
     };
 
     st.lx =  map(lx_raw);
-    st.ly =  map(ly_raw);  // Linux up = negative
+    st.ly =  -map(ly_raw);
     st.rx =  map(rx_raw);
-    st.ry =  map(ry_raw);
+    st.ry =  -map(ry_raw);
 }
 
 // ───────────────────────────── Main loop ────────────────────────────────────
